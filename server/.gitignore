@@ -1,0 +1,39 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE files
+.idea/
+.vscode/
+
+# Ignore compiled binaries
+*.exe
+*.out
+*.dll
+*.so
+
+# Ignore log files
+*.log
+
+# Ignore environment-specific files
+.env
+
+# Ignore package manager directories
+/node_modules/
+
+# Ignore build output
+/dist/
+/build/
+
+# Ignore user-specific files
+*.cache
+*.swp
+
+# Ignore temporary files
+*.tmp
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore sensitive or private files
+secret.txt
