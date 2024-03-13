@@ -278,3 +278,19 @@ export const socialAuth = catchAsyncError(
     }
   }
 );
+
+///update user info
+
+interface IUpdateUserInfo{
+  name?:string;
+  email?:string;
+}
+
+export const updateUserInfo = catchAsyncError(async(req:Request,res:Response,next:NextFunction)=>{
+  try {
+    const {name,email} = req.body as IUpdateUserInfo;
+    const userId = req.user?._id;
+  } catch (error: any) {
+    return next(new ErrorHandler(error.message, 400))
+  }
+})
