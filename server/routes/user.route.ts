@@ -1,3 +1,7 @@
+import {
+  updatePassword,
+  updateUserInfo,
+} from "./../controllers/user.controller";
 import express from "express";
 import {
   activateUser,
@@ -24,5 +28,9 @@ userRouter.get("/refresh", updateAccessToken);
 userRouter.get("/me", isAuthenticated, getUserInfo);
 
 userRouter.post("/social-auth", socialAuth);
+
+userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
+
+userRouter.put("/updatepassword", isAuthenticated, updatePassword);
 
 export default userRouter;
