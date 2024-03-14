@@ -1,5 +1,6 @@
 import {
   updatePassword,
+  updateProfilePicture,
   updateUserInfo,
 } from "./../controllers/user.controller";
 import express from "express";
@@ -32,5 +33,7 @@ userRouter.post("/social-auth", socialAuth);
 userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
 
 userRouter.put("/updatepassword", isAuthenticated, updatePassword);
+
+userRouter.put("/updateavatar", isAuthenticated, updateProfilePicture);
 
 export default userRouter;
