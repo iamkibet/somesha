@@ -5,6 +5,7 @@ import ErrorHandler from "../utils/ErrorHandler";
 import { createCourse } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
+import mongoose from "mongoose";
 
 //uploading course
 export const uploadCourse = catchAsyncError(
@@ -150,6 +151,85 @@ export const getCourseByUser = catchAsyncError(
         content,
       });
     } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+//add questions
+interface IAddQuestionData {
+  question: string;
+  courseId: string;
+  contentId: string;
+}
+
+export const addQuestion = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { question, courseId, contentId }: IAddQuestionData = req.body;
+      const course = await CourseModel.findById(courseId);
+
+      if (!mongoose.Types.ObjectId.isValid(contentId)) {
+        return next(new ErrorHandler("Invalid content id", 400));
+      }
+
+      const courseContent = course?.courseData?.find((item: any) =>
+        item._id.equals(contentId)
+      );
+      if (!courseContent) {
+        return next(new ErrorHandler("Invalid Content Id", 400));
+      }
+
+      // new Question Object
+      const newQuestion: any = {
+        user: req.user,
+        question,
+        questionReplies: [],
+      };
+
+      // add question to course Course content
+      courseContent.questions.push(newQuestion);
+
+      //save updated course
+
+      await course?.save();
+      res.status(200).json({
+        success: true,
+        course,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }
+);
+
+// Answer Questions
+interface IAnswerQuestionData {
+  answer: string;
+  courseId: string;
+  contentId: string;
+  questionId: string;
+}
+
+const answerQuestion = catchAsyncError(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { answer, courseId, contentId, questionId }: IAnswerQuestionData =
+        req.body;
+
+      const course = await CourseModel.findById(courseId);
+      if (!mongoose.Types.ObjectId.isValid(contentId)) {
+        return next(new ErrorHandler("Invalid content id", 400));
+      }
+
+      const courseContent = course?.courseData?.find((item: any) =>
+        item._id.equals(contentId)
+      );
+      if (!courseContent) {
+        return next(new ErrorHandler("Invalid Content Id", 400));
+      }
+
+      const question = courseContent?.questions?.find((item:any)=> item._id.equals(contentId))
       return next(new ErrorHandler(error.message, 500));
     }
   }
