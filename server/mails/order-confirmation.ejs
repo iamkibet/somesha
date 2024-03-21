@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+  </head>
+  <body>
+    <div>
+      <div>
+        <h1>
+          Your Somesha Order is Confirmed <br />
+          <span>And we are just as exited as you are</span>
+        </h1>
+      </div>
+      <div>
+        <h3>Here is What you Ordered</h3>
+        <table>
+          <tr>
+            <td>Order #: <% order._id %></td>
+            <td>Order Date: <% order.date %></td>
+          </tr>
+        </table>
+
+        <table>
+          <tr>
+            <td>item</td>
+            <td>Qty</td>
+            <td>Cost</td>
+          </tr>
+        </table>
+        <table>
+          <tr>
+            <td><% order.name %></td>
+            <td>1</td>
+            <td><% order.price %></td>
+          </tr>
+        </table>
+
+        <table>
+          <tr>
+            <td>subtotal:</td>
+            <td><% order.price %></td>
+          </tr>
+        </table>
+        <table>
+          <tr>
+            <td>Total:</td>
+            <td><% order.price%></td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <p>If you have any questions, Please Contact Support at</p>
+        <a href="mailto:support@isolatedsolutions.tech"
+          >support@isolatedsolutions.tech</a
+        >
+        <p>&copy; 2024 Somesha. All Rights Reserved</p>
+      </div>
+    </div>
+  </body>
+</html>

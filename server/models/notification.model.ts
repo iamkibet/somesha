@@ -10,7 +10,7 @@ export interface INotification extends Document {
 const notificationSchema = new Schema<INotification>(
   {
     title: {
-      trype: String,
+      type: String,
       required: true,
     },
     message: {
