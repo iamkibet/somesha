@@ -3,6 +3,7 @@ import {
   updatePassword,
   updateProfilePicture,
   updateUserInfo,
+  updateUserRole,
 } from "./../controllers/user.controller";
 import express from "express";
 import {
@@ -42,6 +43,13 @@ userRouter.get(
   isAuthenticated,
   authoriseRoles("admin"),
   getAllUsers
+);
+
+userRouter.put(
+  "/update-user-role",
+  isAuthenticated,
+  authoriseRoles("admin"),
+  updateUserRole
 );
 
 export default userRouter;
