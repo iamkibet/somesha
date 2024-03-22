@@ -373,7 +373,7 @@ interface IUpdateProfilePicture {
 export const updateProfilePicture = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { avatar } = req.body;
+      const { avatar } = req.body as IUpdateProfilePicture;
 
       const userId = req?.user?._id;
 
