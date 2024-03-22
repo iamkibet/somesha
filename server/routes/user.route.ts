@@ -1,4 +1,5 @@
 import {
+  deleteUser,
   getAllUsers,
   updatePassword,
   updateProfilePicture,
@@ -50,6 +51,13 @@ userRouter.put(
   isAuthenticated,
   authoriseRoles("admin"),
   updateUserRole
+);
+
+userRouter.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  authoriseRoles("admin"),
+  deleteUser
 );
 
 export default userRouter;
