@@ -1,4 +1,5 @@
 import {
+  getAllUsers,
   updatePassword,
   updateProfilePicture,
   updateUserInfo,
@@ -35,5 +36,12 @@ userRouter.put("/update-user-info", isAuthenticated, updateUserInfo);
 userRouter.put("/updatepassword", isAuthenticated, updatePassword);
 
 userRouter.put("/updateavatar", isAuthenticated, updateProfilePicture);
+
+userRouter.get(
+  "/get-users",
+  isAuthenticated,
+  authoriseRoles("admin"),
+  getAllUsers
+);
 
 export default userRouter;
