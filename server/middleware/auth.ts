@@ -4,7 +4,6 @@ import ErrorHandler from "../utils/ErrorHandler";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { redis } from "../utils/redis";
 
-
 //auth user
 export const isAuthenticated = catchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -28,23 +27,27 @@ export const isAuthenticated = catchAsyncError(
     const user = await redis.get(decoded.id);
 
     if (!user) {
-      return next(new ErrorHandler("User Not Found", 400));
+      return next(new ErrorHandler("Please Log In to access this page", 400));
     }
 
     req.user = JSON.parse(user);
-    
+
     next();
   }
 );
 
-
 //validating user role
 
-export const authoriseRoles = (...roles: string[]) =>{
-    return (req : Request,res:Response,next:NextFunction) =>{
-        if(!roles.includes(req.user?.role || '')){
-            return next(new ErrorHandler(`Role: ${req.user?.role} is not allowed to access this resource`,403))
-        }
-        next();
+export const authoriseRoles = (...roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!roles.includes(req.user?.role || "")) {
+      return next(
+        new ErrorHandler(
+          `Role: ${req.user?.role} is not allowed to access this resource`,
+          403
+        )
+      );
     }
-}
+    next();
+  };
+};
