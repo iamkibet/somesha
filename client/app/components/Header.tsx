@@ -6,6 +6,8 @@ import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
 import CusomModal from "../utils/CustomModel";
 import Login from "../components/auth/Login";
+import SignUp from "../components/auth/SignUp";
+import Verification from "../components/auth/Verification";
 
 type Props = {
   open: boolean;
@@ -96,30 +98,45 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
           </div>
         )}
       </div>
-      {
-        route === "Login" && (
-          <>
-            {
-              open && (
-                <CusomModal
-                open={open}
-                setOpen={setOpen}
-                setRoute={setRoute}
-                activeItem={activeItem}
-                component={Login}
-                />
-              )
-            }
-          </>
-        )
-      }
-      {
-        route === "Sign-up" && (
-          <>
-
-          </>
-        )
-      }
+      {route === "Login" && (
+        <>
+          {open && (
+            <CusomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Login}
+            />
+          )}
+        </>
+      )}
+      {route === "Sign-up" && (
+        <>
+          {open && (
+            <CusomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={SignUp}
+            />
+          )}
+        </>
+      )}
+      {route === "Verification" && (
+        <>
+          {open && (
+            <CusomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Verification}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };
