@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -10,6 +10,8 @@ import {
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -25,6 +27,21 @@ const schema = Yup.object().shape({
 
 const SignUp: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
+  const [register, { data, error, isSuccess }] = useRegisterMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      const message = data?.message || "Registration successful";
+      toast.success(message);
+      setRoute("Verification");
+    }
+    if (error) {
+      if ("data" in error) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   const formik = useFormik({
     initialValues: {
@@ -33,8 +50,13 @@ const SignUp: FC<Props> = ({ setRoute }) => {
       password: "",
     },
     validationSchema: schema,
-    onSubmit: async ({ email, password }) => {
-      setRoute("Verification")
+    onSubmit: async ({ name, email, password }) => {
+      const data = {
+        name,
+        email,
+        password,
+      };
+      await register(data);
     },
   });
 
@@ -44,23 +66,23 @@ const SignUp: FC<Props> = ({ setRoute }) => {
       <h1 className={`${styles.title}`}>Welcome to Somesha</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-            <label className={`${styles.label}`} htmlFor="name">
-                Enter your name
-            </label>
-            <input
-                type="text"
-                name="name"
-                value={values.name}
-                id="name"
-                placeholder="John Doe"
-                onChange={handleChange}
-                className={`${errors.name && touched.name && "border-red-500"} ${
-                styles.input
-                }`}
-            />
-            {errors.name && touched.name && (
-                <span className="text-red-500 pt-2 block">{errors.name}</span>
-            )}
+          <label className={`${styles.label}`} htmlFor="name">
+            Enter your name
+          </label>
+          <input
+            type="text"
+            name="name"
+            value={values.name}
+            id="name"
+            placeholder="John Doe"
+            onChange={handleChange}
+            className={`${errors.name && touched.name && "border-red-500"} ${
+              styles.input
+            }`}
+          />
+          {errors.name && touched.name && (
+            <span className="text-red-500 pt-2 block">{errors.name}</span>
+          )}
         </div>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your email
