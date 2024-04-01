@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
@@ -10,9 +10,13 @@ import {
 } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type Props = {
   setRoute: (route: string) => void;
+  setOpen: (open: boolean) => void;
 };
 
 const schema = Yup.object().shape({
@@ -22,8 +26,9 @@ const schema = Yup.object().shape({
     .min(6, "Password too short"),
 });
 
-const Login: FC<Props> = ({ setRoute }) => {
+const Login: FC<Props> = ({ setRoute, setOpen }) => {
   const [show, setShow] = useState(false);
+  const [login, { isSuccess, error, data }] = useLoginMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -32,9 +37,22 @@ const Login: FC<Props> = ({ setRoute }) => {
     },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      console.log(email, password);
+      await login({ email, password });
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Login successful");
+      setOpen(false);
+    }
+    if (error) {
+      if ("data" in data) {
+        const errorData = error as any;
+        toast.error(errorData.data.message);
+      }
+    }
+  }, [isSuccess, error]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
@@ -98,8 +116,16 @@ const Login: FC<Props> = ({ setRoute }) => {
           or Join with
         </h5>
         <div className="flex items-center justify-center my-3">
-          <FcGoogle size={30} className="cursor-pointer" />
-          <AiFillGithub size={30} className="cursor-pointer" />
+          <FcGoogle
+            size={30}
+            className="cursor-pointer"
+            onClick={() => signIn("google")}
+          />
+          <AiFillGithub
+            size={30}
+            className="cursor-pointer"
+            onClick={() => signIn("github")}
+          />
         </div>
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
           No Account?{" "}
