@@ -59,7 +59,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
 
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 85) {
+      if (window.scrollY > 80) {
         setActive(true);
       } else {
         setActive(false);
@@ -74,7 +74,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
   };
 
   return (
-    <div className="w-full relative">
+    <div className="w-full">
       <div
         className={`${
           active
@@ -83,7 +83,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
         }`}
       >
         <div className="w-[95%] 800px:w-[92%] m-auto py-2 h-full">
-          <div className="flex w-full h-[80px] items-center  justify-between p-3">
+          <div className="w-full h-[80px] flex items-center justify-between p-3">
             <div>
               <Link
                 href={"/"}
@@ -95,6 +95,7 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
             <div className="flex items-center">
               <NavItems activeItem={activeItem} isMobile={false} />
               <ThemeSwitcher />
+
               {/*Just mobile*/}
               <div className="800px:hidden">
                 <HiOutlineMenuAlt3

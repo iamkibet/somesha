@@ -7,6 +7,7 @@
 .yarn/install-state.gz
 
 # Ignore environment-specific files
+client/.env
 .env
 .env.local
 # testing
