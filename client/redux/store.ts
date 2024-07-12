@@ -21,7 +21,7 @@ const initialiseApp = async () => {
     apiSlice.endpoints.refreshToken.initiate({}, { forceRefetch: true })
   );
   await store.dispatch(
-    apiSlice.endpoints.loadUSer.initiate({}, { forceRefetch: true })
+    apiSlice.endpoints.loadUser.initiate({}, { forceRefetch: true })
   );
 };
 

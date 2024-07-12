@@ -1,6 +1,5 @@
 "use client";
 
-
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import { Josefin_Sans } from "next/font/google";
@@ -8,9 +7,10 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { Providers } from "./provider";
 import { SessionProvider } from "next-auth/react";
-import { useLoadUSerQuery } from "@/redux/features/api/apiSlice";
+import { useEffect, useState } from "react";
 import Loader from "./components/Loader/Loader";
 import Footer from "./components/Route/Footer";
+import { useLoadUserQuery } from "@/redux/features/api/apiSlice";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -37,9 +37,7 @@ export default function RootLayout({
         <Providers>
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <Custom>
-                {children} 
-              </Custom>
+              <Custom>{children}</Custom>
               <Toaster position="top-center" reverseOrder={false} />
               <Footer />
             </ThemeProvider>
@@ -51,6 +49,16 @@ export default function RootLayout({
 }
 
 const Custom: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { isLoading } = useLoadUSerQuery({});
-  return <>{isLoading ? <Loader /> : <>{children}</>}</>;
+  const [isClient, setIsClient] = useState(false);
+  const { isLoading } = useLoadUserQuery({}, { skip: !isClient });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  return <>{children}</>;
 };
