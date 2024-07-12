@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from "react";
 import avatarIcon from "../../../public/assets/avatar.svg";
 import { AiOutlineCamera } from "react-icons/ai";
 import { useUpdateAvatarMutation } from "@/redux/features/user/userApi";
+import { useLoadUSerQuery } from "@/redux/features/api/apiSlice";
 
 type Props = {
   avatar: string | null;
@@ -12,24 +13,31 @@ type Props = {
 const ProfileInfo: FC<Props> = ({ avatar, user }) => {
   const [name, setName] = useState(user.name);
   const [updateAvatar, { isSuccess, error }] = useUpdateAvatarMutation();
+  const [loadUser, setLoadUser] = useState(false);
+  const {} = useLoadUSerQuery(undefined, { skip: loadUser ? false : true });
+
   const imageHandler = async (e: any) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       if (fileReader.readyState === 2) {
+        const avatar = fileReader.result;
         updateAvatar({
-          avatar: fileReader.result,
+          avatar,
         });
       }
     };
+    fileReader.readAsDataURL(e.target.files[0]);
   };
 
   useEffect(() => {
-    if(isSuccess) {
-        
+    if (isSuccess) {
+      setLoadUser(true);
     }
+    if (error) {
+      console.log(error);
+    }
+  }, [error, isSuccess]);
 
-  }, [])
-  
   const handleSubmit = async (e: any) => {
     console.log("Submit");
   };
@@ -38,8 +46,10 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
       <div className="w-full flex justify-center">
         <div className="relative">
           <Image
-            src={user.avatar || avatar ? user.avatar || avatar : avatarIcon}
+            src={user.avatar || avatar ? user.avatar.url || avatar : avatarIcon}
             alt="avatar"
+            width={120}
+            height={120}
             className="w-[120px] h-[120px] cursor-pointer border-[3px] border-[#337a39a] rounded-full"
           />
           <input
@@ -91,7 +101,6 @@ const ProfileInfo: FC<Props> = ({ avatar, user }) => {
               type="text"
               className="w-full h-10 dark:bg-slate-900 dark:text-white bg-white rounded-md mt-1 px-2"
               value={user?.phone}
-              disabled
             />
           </div>
           <input

@@ -31,7 +31,9 @@ const SidebarProfile: FC<Props> = ({
         onClick={() => setActive(1)}
       >
         <Image
-          src={user.avatar || avatar ? user.avatar || avatar : defautAvatar}
+          src={user.avatar || avatar ? user.avatar.url || avatar : defautAvatar}
+          width={20}
+          height={20}
           alt="avatar"
           className="w-[20px] h-[20px] 800px:w-[30px] 800px:h-[30px] rounded-full cursor-pointer"
         />
@@ -52,7 +54,7 @@ const SidebarProfile: FC<Props> = ({
       </div>
       <div
         className={`w-full flex items-center px-3 py-4 cursor-pointer ${
-          active === 2 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
+          active === 3 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
         }`}
         onClick={() => setActive(3)}
       >
@@ -63,7 +65,7 @@ const SidebarProfile: FC<Props> = ({
       </div>
       <div
         className={`w-full flex items-center px-3 py-4 cursor-pointer ${
-          active === 2 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
+          active === 4 ? "dark:bg-slate-800 bg-white" : "bg-transparent"
         }`}
         onClick={() => logOutHandler()}
       >

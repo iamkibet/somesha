@@ -1,6 +1,5 @@
 "use client";
 
-"use client";
 
 import "./globals.css";
 import { Poppins } from "next/font/google";
@@ -39,9 +38,10 @@ export default function RootLayout({
           <SessionProvider>
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
               <Custom>
-                {children} <Footer />
+                {children} 
               </Custom>
               <Toaster position="top-center" reverseOrder={false} />
+              <Footer />
             </ThemeProvider>
           </SessionProvider>
         </Providers>

@@ -20,9 +20,9 @@ type Props = {
 };
 
 const schema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Please enter email"),
+  email: Yup.string().email("Invalid email").required("Please enter your email"),
   password: Yup.string()
-    .required("Please enter password")
+    .required("Please enter your password")
     .min(6, "Password too short"),
 });
 
@@ -52,12 +52,12 @@ const Login: FC<Props> = ({ setRoute, setOpen }) => {
         toast.error(errorData.data.message);
       }
     }
-  }, [isSuccess, error]);
+  }, [isSuccess, error, setOpen, data]);
 
   const { errors, touched, values, handleChange, handleSubmit } = formik;
   return (
     <div className="flex flex-col w-full h-full ">
-      <h1 className={`${styles.title}`}>Login to Somesha</h1>
+      <h1 className={`${styles.title}`}>Login with Somesha</h1>
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
           Enter your email

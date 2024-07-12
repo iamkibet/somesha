@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from "react";
 import NavItems from "../utils/NavItems";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
-import CusomModal from "../utils/CustomModel";
+import CusomModal from "../utils/CustomModal";
 import Login from "../components/auth/Login";
 import SignUp from "../components/auth/SignUp";
 import Verification from "../components/auth/Verification";
@@ -107,10 +107,12 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
               {user ? (
                 <Link href={"/profile"}>
                   <Image
-                    src={user.avatar ? user.avatar : avatar}
+                    src={user.avatar ? user.avatar.url : avatar}
                     alt="avatar"
+                    width={30}
+                    height={30}
                     className="w-[30px] h-[30px] rounded-full cursor-pointer"
-                    onClick={() => setOpen(true)}
+                    style={{border: activeItem === 5 ? "2px solid #ffc107" : "none"}}
                   />
                 </Link>
               ) : (
